@@ -97,6 +97,27 @@ const importData = async () => {
             relevantExperience: 3,
         });
 
+        const emp2 = await User.create({
+            employeeId: 'EMP003',
+            firstName: 'Om',
+            lastName: 'Dabhi',
+            email: 'om.dabhi@tecnoprism.com',
+            password: 'password123',
+            role: '4',
+            reportingManagerId: superAdmin._id,
+            designationId: designations[0]._id,
+            departmentId: departments[0]._id,
+            baseLocationId: locations[0]._id,
+            currentLocationId: locations[0]._id,
+            gender: '1',
+            dateOfBirth: new Date('2003-04-03'),
+            doj: new Date('2026-01-08'),
+            employeeStatus: '0',
+            workMode: 'Hybrid',
+            overallExperience: 2,
+            relevantExperience: 0,
+        });
+
         console.log('Seeding Projects & POs...');
         const projects = await Project.insertMany([
             {

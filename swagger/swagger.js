@@ -11,8 +11,8 @@ const options = {
         },
         servers: [ 
             {
-                url: 'http://localhost:5000',
-                description: 'Development server',
+                url: process.env.SWAGGER_SERVER_URL || 'http://localhost:5000',
+                description: 'Server (set SWAGGER_SERVER_URL in production)',
             },
         ],
         components: {
