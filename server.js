@@ -27,13 +27,13 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: '*',
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || '*',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-// enable preflight for all routes
-// app.options('*', cors());
+};
+app.use(cors(corsOptions));
+// CORS preflight is handled by the cors middleware above
 
 app.use(express.json());
 
