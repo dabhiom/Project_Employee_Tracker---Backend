@@ -12,7 +12,6 @@
  *       properties:
  *         _id:
  *           type: string
- *           type: string
  *           description: The auto-generated id of the employee
  *         employeeId:
  *           type: string
