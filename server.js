@@ -93,10 +93,8 @@ app.use('/api/end-clients', endClientRoutes);
 // Error Handler
 app.use(errorHandler);
 
-// Swagger Documentation (enable in non-production or when explicitly enabled)
-if (process.env.NODE_ENV !== 'production' || process.env.SWAGGER_ENABLED === 'true') {
-    swaggerDocs(app);
-}
+// Swagger Documentation (always enabled for now)
+swaggerDocs(app);
 
 const PORT = process.env.PORT || 5000;
 
