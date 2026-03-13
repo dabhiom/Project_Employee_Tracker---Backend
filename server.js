@@ -51,11 +51,11 @@ if (process.env.NODE_ENV === 'production') {
     app.use(helmet({
         contentSecurityPolicy: {
             directives: {
-                defaultSrc: ["'self'"],
-                scriptSrc: ["'self'", "'unsafe-inline'"],
-                styleSrc: ["'self'", "'unsafe-inline'"],
-                imgSrc: ["'self'", "data:"],
-                connectSrc: ["'self'", "https:", "http:"],
+                "default-src": ["'self'"],
+                "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+                "style-src": ["'self'", "'unsafe-inline'"],
+                "img-src": ["'self'", "data:", "https:"],
+                "connect-src": ["'self'", "https:", "http:"],
             },
         },
     }));
