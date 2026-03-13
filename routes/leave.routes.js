@@ -29,6 +29,19 @@ router.use(verifyToken);
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 count:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Leave'
  *   post:
  *     summary: Create a leave
  *     tags: [Leave]
@@ -39,10 +52,19 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/Leave'
  *     responses:
  *       201:
- *         description: Created
+ *         description: Leave created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Leave'
  */
 router.route('/')
     .get(getLeaves)
@@ -66,6 +88,17 @@ router.route('/')
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Leave'
+ *       404:
+ *         description: Leave not found
  *   put:
  *     summary: Update a leave
  *     tags: [Leave]
@@ -77,15 +110,27 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The leave ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/Leave'
  *     responses:
  *       200:
- *         description: Updated
+ *         description: Leave updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Leave'
+ *       404:
+ *         description: Leave not found
  *   delete:
  *     summary: Delete a leave
  *     tags: [Leave]
@@ -97,9 +142,21 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The leave ID
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: Leave deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: Leave not found
  */
 router.route('/:id')
     .get(getLeave)

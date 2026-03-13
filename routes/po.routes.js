@@ -29,6 +29,19 @@ router.use(verifyToken);
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 count:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/PurchaseOrder'
  *   post:
  *     summary: Create a po
  *     tags: [PurchaseOrder]
@@ -39,10 +52,19 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/PurchaseOrder'
  *     responses:
  *       201:
- *         description: Created
+ *         description: PO created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/PurchaseOrder'
  */
 router.route('/')
     .get(getPurchaseOrders)
@@ -66,6 +88,17 @@ router.route('/')
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/PurchaseOrder'
+ *       404:
+ *         description: PO not found
  *   put:
  *     summary: Update a po
  *     tags: [PurchaseOrder]
@@ -77,15 +110,27 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The po ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/PurchaseOrder'
  *     responses:
  *       200:
- *         description: Updated
+ *         description: PO updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/PurchaseOrder'
+ *       404:
+ *         description: PO not found
  *   delete:
  *     summary: Delete a po
  *     tags: [PurchaseOrder]
@@ -97,9 +142,21 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The po ID
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: PO deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: PO not found
  */
 router.route('/:id')
     .get(getPurchaseOrder)

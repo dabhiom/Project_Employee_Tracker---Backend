@@ -12,6 +12,8 @@ const Department = require('./models/department.model');
 const Client = require('./models/client.model');
 const Project = require('./models/project.model');
 const PurchaseOrder = require('./models/po.model');
+const Manager = require('./models/manager.model');
+const EndClient = require('./models/endClient.model');
 const Leave = require('./models/leave.model');
 const Allocation = require('./models/allocation.model');
 const POAllocation = require('./models/poAllocation.model');
@@ -27,6 +29,8 @@ const importData = async () => {
         await Location.deleteMany();
         await Department.deleteMany();
         await Client.deleteMany();
+        await Manager.deleteMany();
+        await EndClient.deleteMany();
         await Project.deleteMany();
         await PurchaseOrder.deleteMany();
         await Leave.deleteMany();
@@ -48,8 +52,16 @@ const importData = async () => {
             { departmentName: 'Management' }
         ]);
 
+        const managers = await Manager.insertMany([
+            { name: 'Alice Walker', email: 'alice@ems.com', phone: '9998887776', departmentId: departments[1]._id }
+        ]);
+
+        const endClients = await EndClient.insertMany([
+            { name: 'Globex Corp', email: 'info@globex.com', phone: '1112223334', address: '123 Business St' }
+        ]);
+
         const clients = await Client.insertMany([
-            { customerName: 'Acme Corp', clientType: 'Enterprise', email: 'contact@acme.com', phone: '1234567890' }
+            { customerName: 'Acme Corp', endClientId: endClients[0]._id, clientType: 'Enterprise', email: 'contact@acme.com', phone: '1234567890' }
         ]);
 
         console.log('Seeding Employees...');
@@ -77,13 +89,12 @@ const importData = async () => {
         });
 
         const emp1 = await User.create({
-            employeeId: 'EMP002',
             firstName: 'John',
             lastName: 'Doe',
             email: 'john.doe@ems.com',
             password: 'password123',
             role: '4',
-            reportingManagerId: superAdmin._id,
+            reportingManagerId: managers[0]._id,
             designationId: designations[0]._id,
             departmentId: departments[0]._id,
             baseLocationId: locations[0]._id,
@@ -98,13 +109,12 @@ const importData = async () => {
         });
 
         const emp2 = await User.create({
-            employeeId: 'EMP003',
             firstName: 'Om',
             lastName: 'Dabhi',
             email: 'om.dabhi@tecnoprism.com',
             password: 'password123',
             role: '4',
-            reportingManagerId: superAdmin._id,
+            reportingManagerId: managers[0]._id,
             designationId: designations[0]._id,
             departmentId: departments[0]._id,
             baseLocationId: locations[0]._id,
@@ -186,6 +196,8 @@ const deleteData = async () => {
         await Location.deleteMany();
         await Department.deleteMany();
         await Client.deleteMany();
+        await Manager.deleteMany();
+        await EndClient.deleteMany();
         await Project.deleteMany();
         await PurchaseOrder.deleteMany();
         await Leave.deleteMany();

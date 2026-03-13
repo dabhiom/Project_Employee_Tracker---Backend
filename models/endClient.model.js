@@ -1,21 +1,11 @@
 const mongoose = require('mongoose');
 
-const clientSchema = new mongoose.Schema(
+const endClientSchema = new mongoose.Schema(
     {
-        customerName: {
+        name: {
             type: String,
-            required: [true, 'Please add a customer name'],
+            required: [true, 'Please add an end-client name'],
             trim: true,
-        },
-        endClientId: {
-            type: mongoose.Schema.ObjectId,
-            ref: 'EndClient',
-        },
-        clientType: {
-            type: String,
-        },
-        contactPerson: {
-            type: String,
         },
         email: {
             type: String,
@@ -25,6 +15,9 @@ const clientSchema = new mongoose.Schema(
             ],
         },
         phone: {
+            type: String,
+        },
+        address: {
             type: String,
         },
         status: {
@@ -37,4 +30,4 @@ const clientSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Client', clientSchema);
+module.exports = mongoose.model('EndClient', endClientSchema);
