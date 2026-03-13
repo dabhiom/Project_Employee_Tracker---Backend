@@ -48,7 +48,17 @@ app.use(cors(corsOptions));
 
 // Security and performance middleware
 if (process.env.NODE_ENV === 'production') {
-    app.use(helmet());
+    app.use(helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'", "'unsafe-inline'"],
+                styleSrc: ["'self'", "'unsafe-inline'"],
+                imgSrc: ["'self'", "data:"],
+                connectSrc: ["'self'", "https:", "http:"],
+            },
+        },
+    }));
     app.use(compression());
 }
 // Basic request logging in non-production
