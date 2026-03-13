@@ -1,29 +1,27 @@
 const express = require('express');
-const { getLocations, getLocation, createLocation, updateLocation, deleteLocation } = require('../controllers/location.controller');
+const { getEndClients, getEndClient, createEndClient, updateEndClient, deleteEndClient } = require('../controllers/endClient.controller');
 
 const { verifyToken } = require('../middleware/auth.middleware');
 const { authorizeRoles } = require('../middleware/role.middleware');
 
 const router = express.Router();
 
-// Apply middleware to all routes
 router.use(verifyToken);
-// Assuming basic access control for now
 // router.use(authorizeRoles('Admin', 'Manager'));
 
 /**
  * @swagger
  * tags:
- *   name: Location
- *   description: Location API
+ *   name: EndClient
+ *   description: EndClient API
  */
 
 /**
  * @swagger
- * /api/locations:
+ * /api/end-clients:
  *   get:
- *     summary: Get all locations
- *     tags: [Location]
+ *     summary: Get all end-clients
+ *     tags: [EndClient]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -41,10 +39,10 @@ router.use(verifyToken);
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Location'
+ *                     $ref: '#/components/schemas/EndClient'
  *   post:
- *     summary: Create a location
- *     tags: [Location]
+ *     summary: Create an end-client
+ *     tags: [EndClient]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -52,10 +50,10 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/EndClient'
  *     responses:
  *       201:
- *         description: Location created successfully
+ *         description: EndClient created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -64,18 +62,18 @@ router.use(verifyToken);
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/EndClient'
  */
 router.route('/')
-    .get(getLocations)
-    .post(createLocation);
+    .get(getEndClients)
+    .post(createEndClient);
 
 /**
  * @swagger
- * /api/locations/{id}:
+ * /api/end-clients/{id}:
  *   get:
- *     summary: Get a location by ID
- *     tags: [Location]
+ *     summary: Get an end-client by ID
+ *     tags: [EndClient]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -84,7 +82,7 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The end-client ID
  *     responses:
  *       200:
  *         description: Success
@@ -96,12 +94,12 @@ router.route('/')
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/EndClient'
  *       404:
- *         description: Location not found
+ *         description: EndClient not found
  *   put:
- *     summary: Update a location
- *     tags: [Location]
+ *     summary: Update an end-client
+ *     tags: [EndClient]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -110,16 +108,16 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The end-client ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/EndClient'
  *     responses:
  *       200:
- *         description: Location updated
+ *         description: EndClient updated
  *         content:
  *           application/json:
  *             schema:
@@ -128,12 +126,12 @@ router.route('/')
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/EndClient'
  *       404:
- *         description: Location not found
+ *         description: EndClient not found
  *   delete:
- *     summary: Delete a location
- *     tags: [Location]
+ *     summary: Delete an end-client
+ *     tags: [EndClient]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -142,10 +140,10 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The end-client ID
  *     responses:
  *       200:
- *         description: Location deleted
+ *         description: EndClient deleted
  *         content:
  *           application/json:
  *             schema:
@@ -156,11 +154,11 @@ router.route('/')
  *                 data:
  *                   type: object
  *       404:
- *         description: Location not found
+ *         description: EndClient not found
  */
 router.route('/:id')
-    .get(getLocation)
-    .put(updateLocation)
-    .delete(deleteLocation);
+    .get(getEndClient)
+    .put(updateEndClient)
+    .delete(deleteEndClient);
 
 module.exports = router;

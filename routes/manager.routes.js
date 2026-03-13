@@ -1,29 +1,27 @@
 const express = require('express');
-const { getLocations, getLocation, createLocation, updateLocation, deleteLocation } = require('../controllers/location.controller');
+const { getManagers, getManager, createManager, updateManager, deleteManager } = require('../controllers/manager.controller');
 
 const { verifyToken } = require('../middleware/auth.middleware');
 const { authorizeRoles } = require('../middleware/role.middleware');
 
 const router = express.Router();
 
-// Apply middleware to all routes
 router.use(verifyToken);
-// Assuming basic access control for now
 // router.use(authorizeRoles('Admin', 'Manager'));
 
 /**
  * @swagger
  * tags:
- *   name: Location
- *   description: Location API
+ *   name: Manager
+ *   description: Manager API
  */
 
 /**
  * @swagger
- * /api/locations:
+ * /api/managers:
  *   get:
- *     summary: Get all locations
- *     tags: [Location]
+ *     summary: Get all managers
+ *     tags: [Manager]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -41,10 +39,10 @@ router.use(verifyToken);
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Location'
+ *                     $ref: '#/components/schemas/Manager'
  *   post:
- *     summary: Create a location
- *     tags: [Location]
+ *     summary: Create a manager
+ *     tags: [Manager]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -52,10 +50,10 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/Manager'
  *     responses:
  *       201:
- *         description: Location created successfully
+ *         description: Manager created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -64,18 +62,18 @@ router.use(verifyToken);
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/Manager'
  */
 router.route('/')
-    .get(getLocations)
-    .post(createLocation);
+    .get(getManagers)
+    .post(createManager);
 
 /**
  * @swagger
- * /api/locations/{id}:
+ * /api/managers/{id}:
  *   get:
- *     summary: Get a location by ID
- *     tags: [Location]
+ *     summary: Get a manager by ID
+ *     tags: [Manager]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -84,7 +82,7 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The manager ID
  *     responses:
  *       200:
  *         description: Success
@@ -96,12 +94,12 @@ router.route('/')
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/Manager'
  *       404:
- *         description: Location not found
+ *         description: Manager not found
  *   put:
- *     summary: Update a location
- *     tags: [Location]
+ *     summary: Update a manager
+ *     tags: [Manager]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -110,16 +108,16 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The manager ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/Manager'
  *     responses:
  *       200:
- *         description: Location updated
+ *         description: Manager updated
  *         content:
  *           application/json:
  *             schema:
@@ -128,12 +126,12 @@ router.route('/')
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Location'
+ *                   $ref: '#/components/schemas/Manager'
  *       404:
- *         description: Location not found
+ *         description: Manager not found
  *   delete:
- *     summary: Delete a location
- *     tags: [Location]
+ *     summary: Delete a manager
+ *     tags: [Manager]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -142,10 +140,10 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
- *         description: The location ID
+ *         description: The manager ID
  *     responses:
  *       200:
- *         description: Location deleted
+ *         description: Manager deleted
  *         content:
  *           application/json:
  *             schema:
@@ -156,11 +154,11 @@ router.route('/')
  *                 data:
  *                   type: object
  *       404:
- *         description: Location not found
+ *         description: Manager not found
  */
 router.route('/:id')
-    .get(getLocation)
-    .put(updateLocation)
-    .delete(deleteLocation);
+    .get(getManager)
+    .put(updateManager)
+    .delete(deleteManager);
 
 module.exports = router;

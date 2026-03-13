@@ -29,6 +29,19 @@ router.use(verifyToken);
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 count:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/POAllocation'
  *   post:
  *     summary: Create a poAllocation
  *     tags: [POAllocation]
@@ -39,10 +52,19 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/POAllocation'
  *     responses:
  *       201:
- *         description: Created
+ *         description: POAllocation created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/POAllocation'
  */
 router.route('/')
     .get(getPOAllocations)
@@ -66,6 +88,17 @@ router.route('/')
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/POAllocation'
+ *       404:
+ *         description: POAllocation not found
  *   put:
  *     summary: Update a poAllocation
  *     tags: [POAllocation]
@@ -77,15 +110,27 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The poAllocation ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/POAllocation'
  *     responses:
  *       200:
- *         description: Updated
+ *         description: POAllocation updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/POAllocation'
+ *       404:
+ *         description: POAllocation not found
  *   delete:
  *     summary: Delete a poAllocation
  *     tags: [POAllocation]
@@ -97,9 +142,21 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The poAllocation ID
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: POAllocation deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: POAllocation not found
  */
 router.route('/:id')
     .get(getPOAllocation)

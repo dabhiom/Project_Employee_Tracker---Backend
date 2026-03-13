@@ -1,24 +1,16 @@
 const mongoose = require('mongoose');
 
-const clientSchema = new mongoose.Schema(
+const managerSchema = new mongoose.Schema(
     {
-        customerName: {
+        name: {
             type: String,
-            required: [true, 'Please add a customer name'],
+            required: [true, 'Please add a manager name'],
             trim: true,
-        },
-        endClientId: {
-            type: mongoose.Schema.ObjectId,
-            ref: 'EndClient',
-        },
-        clientType: {
-            type: String,
-        },
-        contactPerson: {
-            type: String,
         },
         email: {
             type: String,
+            required: [true, 'Please add an email'],
+            unique: true,
             match: [
                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                 'Please add a valid email',
@@ -26,6 +18,12 @@ const clientSchema = new mongoose.Schema(
         },
         phone: {
             type: String,
+            required: [true, 'Please add a phone number'],
+        },
+        departmentId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Department',
+            required: [true, 'Please assign a department'],
         },
         status: {
             type: Boolean,
@@ -37,4 +35,4 @@ const clientSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Client', clientSchema);
+module.exports = mongoose.model('Manager', managerSchema);

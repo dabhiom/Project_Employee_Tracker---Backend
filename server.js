@@ -1,6 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
 const connectDB = require('./config/db');
 const { errorHandler } = require('./middleware/error.middleware');
 // Routes
@@ -15,6 +19,8 @@ const poRoutes = require('./routes/po.routes');
 const leaveRoutes = require('./routes/leave.routes');
 const allocationRoutes = require('./routes/allocation.routes');
 const poAllocationRoutes = require('./routes/poAllocation.routes');
+const managerRoutes = require('./routes/manager.routes');
+const endClientRoutes = require('./routes/endClient.routes');
 // Swagger
 const swaggerDocs = require('./swagger/swagger');
 
@@ -26,6 +32,11 @@ connectDB();
 
 const app = express();
 
+// Trust proxy when behind a proxy/load balancer (e.g., Render, Heroku)
+if (process.env.TRUST_PROXY === '1') {
+    app.set('trust proxy', 1);
+}
+
 // Middleware
 const corsOptions = {
     origin: process.env.CORS_ORIGIN || '*',
@@ -34,6 +45,23 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 // CORS preflight is handled by the cors middleware above
+
+// Security and performance middleware
+if (process.env.NODE_ENV === 'production') {
+    app.use(helmet());
+    app.use(compression());
+}
+// Basic request logging in non-production
+if (process.env.NODE_ENV !== 'production') {
+    app.use(morgan('dev'));
+}
+
+// Basic rate limiting for API endpoints
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 100, // limit each IP
+});
+app.use('/api/', apiLimiter);
 
 app.use(express.json());
 
@@ -49,12 +77,16 @@ app.use('/api/pos', poRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/allocations', allocationRoutes);
 app.use('/api/po-allocations', poAllocationRoutes);
+app.use('/api/managers', managerRoutes);
+app.use('/api/end-clients', endClientRoutes);
 
 // Error Handler
 app.use(errorHandler);
 
-// Swagger Documentation
-swaggerDocs(app);
+// Swagger Documentation (enable in non-production or when explicitly enabled)
+if (process.env.NODE_ENV !== 'production' || process.env.SWAGGER_ENABLED === 'true') {
+    swaggerDocs(app);
+}
 
 const PORT = process.env.PORT || 5000;
 

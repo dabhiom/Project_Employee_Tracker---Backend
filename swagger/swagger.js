@@ -2,17 +2,17 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const options = {
-    definition: {  
+    definition: {
         openapi: '3.0.0',
         info: {
             title: 'Project Manager Tracker API',
-            version: '1.0.0', 
-            description: 'API documentation for Project Manager Tracker',  
+            version: '1.0.0',
+            description: 'API documentation for Project Manager Tracker',
         },
-        servers: [ 
+        servers: [
             {
-                url: process.env.SWAGGER_SERVER_URL || 'http://localhost:5000',
-                description: 'Server (set SWAGGER_SERVER_URL in production)',
+                url: process.env.SWAGGER_SERVER_URL || '/',
+                description: 'Server URL',
             },
         ],
         components: {
@@ -28,7 +28,7 @@ const options = {
             {
                 bearerAuth: [],
             },
-        ], 
+        ],
     },
     apis: ['./routes/*.js', './swagger/schemas.js'], // Files containing annotations
 };

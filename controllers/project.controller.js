@@ -5,7 +5,10 @@ const Project = require('../models/project.model');
 // @access  Private
 const getProjects = async (req, res, next) => {
     try {
-        const items = await Project.find({});
+        const items = await Project.find({})
+            .populate('clientId', 'customerName')
+            .populate('projectManagerId', 'name')
+            .populate('teamLeadId', 'name');
         res.status(200).json({ success: true, count: items.length, data: items });
     } catch (error) { next(error); }
 };
@@ -15,7 +18,10 @@ const getProjects = async (req, res, next) => {
 // @access  Private
 const getProject = async (req, res, next) => {
     try {
-        const item = await Project.findById(req.params.id);
+        const item = await Project.findById(req.params.id)
+            .populate('clientId', 'customerName')
+            .populate('projectManagerId', 'name')
+            .populate('teamLeadId', 'name');
         if (!item) { res.status(404); throw new Error('Project not found'); }
         res.status(200).json({ success: true, data: item });
     } catch (error) { next(error); }

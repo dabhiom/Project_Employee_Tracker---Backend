@@ -29,6 +29,19 @@ router.use(verifyToken);
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 count:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Project'
  *   post:
  *     summary: Create a project
  *     tags: [Project]
@@ -39,10 +52,19 @@ router.use(verifyToken);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/Project'
  *     responses:
  *       201:
- *         description: Created
+ *         description: Project created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Project'
  */
 router.route('/')
     .get(getProjects)
@@ -66,6 +88,17 @@ router.route('/')
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Project'
+ *       404:
+ *         description: Project not found
  *   put:
  *     summary: Update a project
  *     tags: [Project]
@@ -77,15 +110,27 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The project ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/Project'
  *     responses:
  *       200:
- *         description: Updated
+ *         description: Project updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Project'
+ *       404:
+ *         description: Project not found
  *   delete:
  *     summary: Delete a project
  *     tags: [Project]
@@ -97,9 +142,21 @@ router.route('/')
  *         required: true
  *         schema:
  *           type: string
+ *         description: The project ID
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: Project deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: Project not found
  */
 router.route('/:id')
     .get(getProject)

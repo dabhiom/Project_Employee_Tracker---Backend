@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
     {
         employeeId: {
             type: String,
-            required: [true, 'Please provide an employee ID'],
             unique: true,
         },
         firstName: {
@@ -73,7 +72,7 @@ const userSchema = new mongoose.Schema(
         },
         reportingManagerId: {
             type: mongoose.Schema.ObjectId,
-            ref: 'User',
+            ref: 'Manager',
         },
         baseLocationId: {
             type: mongoose.Schema.ObjectId,
@@ -140,6 +139,26 @@ const userSchema = new mongoose.Schema(
 userSchema.pre('save', function () {
     if (this.firstName || this.lastName) {
         this.fullName = `${this.firstName || ''} ${this.lastName || ''}`.trim();
+    }
+});
+
+// Auto-generate employeeId before validation
+userSchema.pre('validate', async function () {
+    if (!this.employeeId) {
+        // Find the last user created with an EMP ID
+        const lastUser = await this.constructor.findOne({ employeeId: /^EMP/ })
+            .sort({ createdAt: -1 })
+            .exec();
+
+        let idNum = 1;
+        if (lastUser && lastUser.employeeId) {
+            const match = lastUser.employeeId.match(/^EMP(\d+)$/);
+            if (match) {
+                idNum = parseInt(match[1], 10) + 1;
+            }
+        }
+
+        this.employeeId = `EMP${idNum.toString().padStart(3, '0')}`;
     }
 });
 
