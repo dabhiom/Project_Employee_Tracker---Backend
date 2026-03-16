@@ -61,7 +61,8 @@ const importData = async () => {
         ]);
 
         const clients = await Client.insertMany([
-            { customerName: 'Acme Corp', endClientId: endClients[0]._id, clientType: 'Enterprise', email: 'contact@acme.com', phone: '1234567890' }
+            { customerName: 'Acme Corp', endClientId: endClients[0]._id, clientType: 'Enterprise', email: 'contact@acme.com', phone: '1234567890' },
+            { customerName: 'Tecno', endClientId: endClients[0]._id, clientType: 'Enterprise', email: 'contact@tecno.com', phone: '1234567890' }
         ]);
 
         console.log('Seeding Employees...');
@@ -138,6 +139,15 @@ const importData = async () => {
                 projectManagerId: superAdmin._id,
                 projectStartDate: new Date('2023-01-01'),
                 projectEndDate: new Date('2024-12-31')
+            },
+            {
+                projectName: 'Tecno Prism - Employee Tracker',
+                clientId: clients[0]._id,
+                projectType: 'Fixed',
+                projectStatus: 'Active',
+                projectManagerId: emp1._id,
+                projectStartDate: new Date('2026-01-01'),
+                projectEndDate: new Date('2026-12-31')
             }
         ]);
 
