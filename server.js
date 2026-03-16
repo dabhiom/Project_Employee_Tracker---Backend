@@ -21,6 +21,7 @@ const allocationRoutes = require('./routes/allocation.routes');
 const poAllocationRoutes = require('./routes/poAllocation.routes');
 const managerRoutes = require('./routes/manager.routes');
 const endClientRoutes = require('./routes/endClient.routes');
+const ddlRoutes = require('./routes/ddl.routes');
 // Swagger
 const swaggerDocs = require('./swagger/swagger');
 
@@ -89,6 +90,7 @@ app.use('/api/allocations', allocationRoutes);
 app.use('/api/po-allocations', poAllocationRoutes);
 app.use('/api/managers', managerRoutes);
 app.use('/api/end-clients', endClientRoutes);
+app.use('/api/ddls', ddlRoutes);
 
 // Error Handler
 app.use(errorHandler);
