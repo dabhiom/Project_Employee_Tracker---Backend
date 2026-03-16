@@ -1,10 +1,10 @@
 const express = require('express');
 const { getClientDdls, getEmployeeDdls, getDesignationDdls } = require('../controllers/ddl.controller');
-const { protect } = require('../middleware/auth.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
-router.use(protect); // Ensure all DDL routes require authentication
+router.use(verifyToken); // Ensure all DDL routes require authentication
 
 /**
  * @swagger
