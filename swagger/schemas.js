@@ -269,4 +269,80 @@
  *           type: string
  *         status:
  *           type: boolean
+ *           
+ *     Allocation:
+ *       type: object
+ *       required:
+ *         - employeeId
+ *         - projectId
+ *         - roleInProject
+ *         - resourceStartDate
+ *         - resourceEndDate
+ *       properties:
+ *         _id:
+ *           type: string
+ *         employeeId:
+ *           type: string
+ *         projectId:
+ *           type: string
+ *         roleInProject:
+ *           type: string
+ *         resourceStartDate:
+ *           type: string
+ *           format: date
+ *         resourceEndDate:
+ *           type: string
+ *           format: date
+ *         allocationStatus:
+ *           type: string
+ *           enum: ['Active', 'Released']
+ *         comments:
+ *           type: string
+ *           
+ *     Client:
+ *       type: object
+ *       required:
+ *         - customerName
+ *       properties:
+ *         _id:
+ *           type: string
+ *         customerName:
+ *           type: string
+ *         endClientId:
+ *           type: string
+ *         clientType:
+ *           type: string
+ *         contactPerson:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         phone:
+ *           type: string
+ *         status:
+ *           type: boolean
+ *           
+ *     Department:
+ *       type: object
+ *       required:
+ *         - departmentName
+ *       properties:
+ *         _id:
+ *           type: string
+ *         departmentName:
+ *           type: string
+ *         status:
+ *           type: boolean
+ *           
+ *     Designation:
+ *       type: object
+ *       required:
+ *         - designationName
+ *       properties:
+ *         _id:
+ *           type: string
+ *         designationName:
+ *           type: string
+ *         status:
+ *           type: boolean
  */

@@ -1,4 +1,6 @@
 const Manager = require('../models/manager.model');
+const User = require('../models/user.model');
+const Project = require('../models/project.model');
 
 // @desc    Get all managers
 // @route   GET /api/managers
@@ -49,6 +51,21 @@ const deleteManager = async (req, res, next) => {
     try {
         const item = await Manager.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Manager not found'); }
+
+        // Check if manager is associated with any users or projects
+        const isAssociatedWithUsers = await User.exists({ reportingManagerId: req.params.id });
+        const isAssociatedWithProjects = await Project.exists({ 
+            $or: [
+                { projectManagerId: req.params.id },
+                { teamLeadId: req.params.id }
+            ]
+        });
+        
+        if (isAssociatedWithUsers || isAssociatedWithProjects) {
+            res.status(400);
+            throw new Error('Cannot delete this manager because they are associated with one or more employees or projects.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

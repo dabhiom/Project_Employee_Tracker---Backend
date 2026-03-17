@@ -1,4 +1,7 @@
 const Project = require('../models/project.model');
+const Allocation = require('../models/allocation.model');
+const PurchaseOrder = require('../models/po.model');
+const POAllocation = require('../models/poAllocation.model');
 
 // @desc    Get all projects
 // @route   GET /api/projects
@@ -55,6 +58,17 @@ const deleteProject = async (req, res, next) => {
     try {
         const item = await Project.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Project not found'); }
+
+        // Check if project is associated with any allocations, purchase orders, or PO allocations
+        const isAssociatedWithAllocations = await Allocation.exists({ projectId: req.params.id });
+        const isAssociatedWithPOs = await PurchaseOrder.exists({ projectId: req.params.id });
+        const isAssociatedWithPOAllocations = await POAllocation.exists({ projectId: req.params.id });
+        
+        if (isAssociatedWithAllocations || isAssociatedWithPOs || isAssociatedWithPOAllocations) {
+            res.status(400);
+            throw new Error('Cannot delete this project because it is associated with one or more allocations, purchase orders, or PO allocations.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

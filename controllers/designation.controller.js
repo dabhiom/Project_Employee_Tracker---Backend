@@ -1,4 +1,5 @@
 const Designation = require('../models/designation.model');
+const User = require('../models/user.model');
 
 // @desc    Get all designations
 // @route   GET /api/designations
@@ -49,6 +50,14 @@ const deleteDesignation = async (req, res, next) => {
     try {
         const item = await Designation.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Designation not found'); }
+
+        // Check if designation is associated with any users
+        const isAssociated = await User.exists({ designationId: req.params.id });
+        if (isAssociated) {
+            res.status(400);
+            throw new Error('Cannot delete this designation because it is associated with one or more employees.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

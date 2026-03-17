@@ -1,4 +1,5 @@
 const Location = require('../models/location.model');
+const User = require('../models/user.model');
 
 // @desc    Get all locations
 // @route   GET /api/locations
@@ -49,6 +50,15 @@ const deleteLocation = async (req, res, next) => {
     try {
         const item = await Location.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Location not found'); }
+
+        // Check if location is associated with any users as a base location
+        const isAssociated = await User.exists({ baseLocationId: req.params.id });
+        
+        if (isAssociated) {
+            res.status(400);
+            throw new Error('Cannot delete this location because it is associated with one or more employees.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

@@ -1,4 +1,6 @@
 const Department = require('../models/department.model');
+const User = require('../models/user.model');
+const Manager = require('../models/manager.model');
 
 // @desc    Get all departments
 // @route   GET /api/departments
@@ -49,6 +51,16 @@ const deleteDepartment = async (req, res, next) => {
     try {
         const item = await Department.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Department not found'); }
+
+        // Check if department is associated with any users or managers
+        const isAssociatedWithUsers = await User.exists({ departmentId: req.params.id });
+        const isAssociatedWithManagers = await Manager.exists({ departmentId: req.params.id });
+        
+        if (isAssociatedWithUsers || isAssociatedWithManagers) {
+            res.status(400);
+            throw new Error('Cannot delete this department because it is associated with one or more employees or managers.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

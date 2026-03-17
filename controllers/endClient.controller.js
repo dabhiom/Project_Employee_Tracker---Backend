@@ -1,4 +1,5 @@
 const EndClient = require('../models/endClient.model');
+const Client = require('../models/client.model');
 
 // @desc    Get all end-clients
 // @route   GET /api/end-clients
@@ -49,6 +50,14 @@ const deleteEndClient = async (req, res, next) => {
     try {
         const item = await EndClient.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('EndClient not found'); }
+
+        // Check if end-client is associated with any clients
+        const isAssociated = await Client.exists({ endClientId: req.params.id });
+        if (isAssociated) {
+            res.status(400);
+            throw new Error('Cannot delete this end-client because it is associated with one or more clients.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

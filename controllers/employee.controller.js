@@ -5,7 +5,12 @@ const User = require('../models/user.model');
 // @access  Private/Admin
 const getEmployees = async (req, res, next) => {
     try {
-        const employees = await User.find({}).select('-password');
+        const employees = await User.find({})
+            .populate('designationId', 'designationName')
+            .populate('departmentId', 'departmentName')
+            .populate('reportingManagerId', 'name')
+            .populate('baseLocationId', 'locationName')
+            .select('-password');
         res.status(200).json({
             success: true,
             count: employees.length,
@@ -21,7 +26,12 @@ const getEmployees = async (req, res, next) => {
 // @access  Private/Admin
 const getEmployee = async (req, res, next) => {
     try {
-        const employee = await User.findById(req.params.id).select('-password');
+        const employee = await User.findById(req.params.id)
+            .populate('designationId', 'designationName')
+            .populate('departmentId', 'departmentName')
+            .populate('reportingManagerId', 'name')
+            .populate('baseLocationId', 'locationName')
+            .select('-password');
 
         if (!employee) {
             res.status(404);
