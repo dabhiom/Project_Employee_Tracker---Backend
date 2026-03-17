@@ -1,4 +1,6 @@
 const Client = require('../models/client.model');
+const Project = require('../models/project.model');
+const PurchaseOrder = require('../models/po.model');
 
 // @desc    Get all clients
 // @route   GET /api/clients
@@ -49,6 +51,16 @@ const deleteClient = async (req, res, next) => {
     try {
         const item = await Client.findById(req.params.id);
         if (!item) { res.status(404); throw new Error('Client not found'); }
+
+        // Check if client is associated with any projects or purchase orders
+        const isAssociatedWithProjects = await Project.exists({ clientId: req.params.id });
+        const isAssociatedWithPOs = await PurchaseOrder.exists({ clientId: req.params.id });
+        
+        if (isAssociatedWithProjects || isAssociatedWithPOs) {
+            res.status(400);
+            throw new Error('Cannot delete this client because it is associated with one or more projects or purchase orders.');
+        }
+
         await item.deleteOne();
         res.status(200).json({ success: true, data: {} });
     } catch (error) { next(error); }

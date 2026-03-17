@@ -63,24 +63,23 @@ const userSchema = new mongoose.Schema(
             type: Date,
         },
         designationId: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Designation',
         },
         departmentId: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Department',
         },
         reportingManagerId: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Manager',
         },
         baseLocationId: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Location',
         },
-        currentLocationId: {
-            type: mongoose.Schema.ObjectId,
-            ref: 'Location',
+        currentLocation: {
+            type: String,
         },
         homeTown: {
             type: String,
@@ -122,11 +121,11 @@ const userSchema = new mongoose.Schema(
             default: true,
         },
         createdBy: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
         updatedBy: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
     },
